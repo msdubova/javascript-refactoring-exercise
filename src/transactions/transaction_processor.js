@@ -12,23 +12,22 @@ function processTransactions(transActions) {
 
     txCount = sortByAmountThenName(txCount);
 
-    // Place them back in array for returning
-    Object.keys(txCount).forEach(function (key, index) {
-        txr[index] = `${key} ${txCount[key]}`;
+    Object.keys(txCount).forEach(function (key) {
+        txr.push(`${key} ${txCount[key]}`);
     });
+
     return txr;
 }
 
 function sortByAmountThenName(txCount) {
-    let sortedKeys = Object.keys(txCount).sort((itemOne, itemTwo) => txCount[itemTwo] - txCount[itemOne] || itemOne.localeCompare(itemTwo));
-    let sortedResults = {};
-    sortedKeys.forEach((objectKey) => {
-        sortedResults[objectKey] = txCount[objectKey];
-
-    });
-    return sortedResults;
-
+    return Object.keys(txCount)
+        .sort((itemOne, itemTwo) => txCount[itemTwo] - txCount[itemOne] || itemOne.localeCompare(itemTwo))
+        .reduce(((sortedResults, objectKey) => {
+            sortedResults[objectKey] = txCount[objectKey];
+            return sortedResults
+        }), {})
 }
+
 module.exports = processTransactions;
 
 
